@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
-    implementation 'io.grpc:grpc-netty-shaded:1.37.0'
+    implementation 'io.grpc:grpc-netty-shaded:1.37.0' // use netty shaded to includes SSL lib
     implementation 'io.grpc:grpc-protobuf:1.37.0'
     implementation 'io.grpc:grpc-stub:1.37.0'
     compileOnly 'org.apache.tomcat:annotations-api:6.0.53'

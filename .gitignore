@@ -2,3 +2,6 @@ build
 .idea
 out
 .gradle
+ssl/*.key
+ssl/server.crt
+ssl/server.pem

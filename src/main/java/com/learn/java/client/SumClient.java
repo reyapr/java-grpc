@@ -11,19 +11,31 @@ import com.learn.grpc.java.proto.SumServiceGrpc;
 import io.grpc.Deadline;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
+import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
 import io.grpc.stub.StreamObserver;
 
+import javax.net.ssl.SSLException;
+import java.io.File;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class SumClient {
 
-  public static void main(String[] args) throws InterruptedException {
+  public static void main(String[] args) throws InterruptedException, SSLException {
     System.out.println("run gRPC client");
 
-    ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 8001)
-        .usePlaintext()
+    // dev client
+//    ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 8001)
+//        .usePlaintext()
+//        .build();
+
+    // secure client
+    ManagedChannel channel = NettyChannelBuilder.forAddress("localhost", 8001)
+        .sslContext(GrpcSslContexts.forClient().trustManager(
+            new File("ssl/ca.crt")
+        ).build())
         .build();
 
 //    doSum(channel);
@@ -53,7 +65,7 @@ public class SumClient {
     SumServiceGrpc.SumServiceBlockingStub sumServiceBlockingStub = SumServiceGrpc.newBlockingStub(channel);
 
     sumServiceBlockingStub
-        .withDeadline(Deadline.after(500, TimeUnit.MILLISECONDS)) // timeout
+        .withDeadline(Deadline.after(2000, TimeUnit.MILLISECONDS)) // timeout
         .primNumber(PrimeNumberRequest.newBuilder()
         .setValue(-1)
         .build())
