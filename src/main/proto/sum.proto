@@ -1,0 +1,46 @@
+syntax = "proto3";
+
+package sum;
+
+option java_package = "com.learn.grpc.java.proto";
+option java_multiple_files = true;
+
+message SumRequest {
+  int32 num1 = 1;
+  int32 num2 = 2;
+}
+
+message SumResponse {
+  int32 result = 1;
+}
+
+message PrimeNumberRequest {
+  int32 value = 1;
+}
+
+message PrimeNumberResponse {
+  int32 result = 1;
+}
+
+message AverageRequest {
+  int32 value = 1;
+}
+
+message AverageResponse {
+  double result = 1;
+}
+
+message MaximumRequest {
+  int32 value = 1;
+}
+
+message MaximumResponse {
+  int32 result = 1;
+}
+
+service SumService {
+  rpc Sum(SumRequest) returns (SumResponse) {}
+  rpc PrimNumber(PrimeNumberRequest) returns(stream PrimeNumberResponse) {}
+  rpc GetAverage(stream AverageRequest) returns (AverageResponse) {}
+  rpc GetMaximum(stream MaximumRequest) returns (stream MaximumResponse) {}
+}
